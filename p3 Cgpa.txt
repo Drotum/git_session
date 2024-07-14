@@ -12,6 +12,7 @@ Name it Student.
 Paste the following code into the editor:
 java
 Copy code
+
 public class Student {
     private String name;
     private String usn;
@@ -60,6 +61,8 @@ public class Student {
         return sb.toString().trim();
     }
 }
+
+
 Create the StudentInfoApp Class:
 Right-click on src in your project.
 Select New > Class.
@@ -67,6 +70,7 @@ Name it StudentInfoApp.
 Paste the following code into the editor:
 java
 Copy code
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -220,6 +224,8 @@ public class StudentInfoApp {
         });
     }
 }
+
+
 Explanation of Features
 Student Class: Represents a single student, storing their details and computing the CGPA from SGPA values.
 StudentInfoApp Class: Manages the GUI, including input fields for student details, buttons for actions, and a text area for displaying the collection of students.
