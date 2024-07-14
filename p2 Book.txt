@@ -1,0 +1,154 @@
+Create a new Java Project in Eclipse:
+
+Open Eclipse IDE.
+Go to File > New > Java Project.
+Enter the project name (e.g., BookDatabase).
+Create the Book Class:
+
+Right-click on src in your project and select New > Class.
+Name it Book and paste the following code:
+java
+Copy code
+public class Book {
+    private int bookId;
+    private String title;
+    private String author;
+    private String publisher;
+    private double price;
+
+    public Book(int bookId, String title, String author, String publisher, double price) {
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.price = price;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId=" + bookId +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", price=" + price +
+                '}';
+    }
+}
+Create the BookManager Class:
+Right-click on src in your project and select New > Class.
+Name it BookManager and paste the following code:
+java
+Copy code
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class BookManager {
+    private List<Book> bookList;
+
+    public BookManager() {
+        bookList = new ArrayList<>();
+    }
+
+    public void addBook(Book book) {
+        bookList.add(book);
+    }
+
+    public List<Book> sortBooksByPrice() {
+        List<Book> sortedList = new ArrayList<>(bookList);
+        sortedList.sort(Comparator.comparingDouble(Book::getPrice));
+        return sortedList;
+    }
+
+    public List<Book> getBooksByAuthor(String author) {
+        return bookList.stream()
+                .filter(book -> book.getAuthor().equalsIgnoreCase(author))
+                .collect(Collectors.toList());
+    }
+
+    public List<Book> getBooksByPriceGreaterThan(double price) {
+        return bookList.stream()
+                .filter(book -> book.getPrice() > price)
+                .collect(Collectors.toList());
+    }
+
+    public void displayBooks(List<Book> books) {
+        books.forEach(System.out::println);
+    }
+
+    public void displayAllBooks() {
+        displayBooks(bookList);
+    }
+}
+Create the Tester Class:
+Right-click on src in your project and select New > Class.
+Name it BookDatabaseTester and paste the following code:
+java
+Copy code
+import java.util.List;
+import java.util.Scanner;
+
+public class BookDatabaseTester {
+    public static void main(String[] args) {
+        BookManager manager = new BookManager();
+        Scanner scanner = new Scanner(System.in);
+
+        // Adding some books to the database
+        manager.addBook(new Book(1, "Book One", "Author One", "Publisher One", 19.99));
+        manager.addBook(new Book(2, "Book Two", "Author Two", "Publisher Two", 29.99));
+        manager.addBook(new Book(3, "Book Three", "Author One", "Publisher Three", 15.99));
+        manager.addBook(new Book(4, "Book Four", "Author Three", "Publisher One", 9.99));
+        manager.addBook(new Book(5, "Book Five", "Author Two", "Publisher Two", 25.99));
+
+        // Display all books
+        System.out.println("All books:");
+        manager.displayAllBooks();
+
+        // Sort books by price
+        List<Book> sortedBooks = manager.sortBooksByPrice();
+        System.out.println("\nBooks sorted by price:");
+        manager.displayBooks(sortedBooks);
+
+        // Prompt for an author name and list all books by that author
+        System.out.print("\nEnter an author name to list their books: ");
+        String author = scanner.nextLine();
+        List<Book> booksByAuthor = manager.getBooksByAuthor(author);
+        System.out.println("Books by " + author + ":");
+        manager.displayBooks(booksByAuthor);
+
+        // Prompt for a price and list all books with price greater than that
+        System.out.print("\nEnter a price to list books with price greater than that: ");
+        double price = scanner.nextDouble();
+        List<Book> booksByPrice = manager.getBooksByPriceGreaterThan(price);
+        System.out.println("Books with price greater than " + price + ":");
+        manager.displayBooks(booksByPrice);
+
+        scanner.close();
+    }
+}
+Run the Program:
+Right-click on BookDatabaseTester and select Run As > Java Application

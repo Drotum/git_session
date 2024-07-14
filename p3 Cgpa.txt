@@ -1,0 +1,251 @@
+Create a New Java Project:
+
+Open Eclipse.
+Go to File > New > Java Project.
+Enter the project name (e.g., StudentInfoApp).
+Click Finish.
+Create the Student Class:
+
+Right-click on src in your project.
+Select New > Class.
+Name it Student.
+Paste the following code into the editor:
+java
+Copy code
+public class Student {
+    private String name;
+    private String usn;
+    private int age;
+    private String address;
+    private double[] sgpa;
+    private String category;
+    private double cgpa;
+
+    public Student(String name, String usn, int age, String address, double[] sgpa, String category) {
+        this.name = name;
+        this.usn = usn;
+        this.age = age;
+        this.address = address;
+        this.sgpa = sgpa;
+        this.category = category;
+        this.cgpa = computeCgpa();
+    }
+
+    private double computeCgpa() {
+        double sum = 0;
+        for (double gpa : sgpa) {
+            sum += gpa;
+        }
+        return sum / sgpa.length;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", usn='" + usn + '\'' +
+                ", age=" + age +
+                ", address='" + address + '\'' +
+                ", sgpa=" + sgpaToString() +
+                ", category='" + category + '\'' +
+                ", cgpa=" + cgpa +
+                '}';
+    }
+
+    private String sgpaToString() {
+        StringBuilder sb = new StringBuilder();
+        for (double gpa : sgpa) {
+            sb.append(gpa).append(" ");
+        }
+        return sb.toString().trim();
+    }
+}
+Create the StudentInfoApp Class:
+Right-click on src in your project.
+Select New > Class.
+Name it StudentInfoApp.
+Paste the following code into the editor:
+java
+Copy code
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StudentInfoApp {
+    private JFrame frame;
+    private JTextField nameField, usnField, ageField, addressField, sgpa1Field, sgpa2Field, sgpa3Field, sgpa4Field, categoryField;
+    private JTextArea displayArea;
+    private List<Student> students;
+
+    public StudentInfoApp() {
+        students = new ArrayList<>();
+        initialize();
+    }
+
+    private void initialize() {
+        frame = new JFrame("Student Information");
+        frame.setBounds(100, 100, 600, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new GridLayout(0, 2, 10, 10));
+
+        frame.getContentPane().add(new JLabel("Name:"));
+        nameField = new JTextField();
+        frame.getContentPane().add(nameField);
+
+        frame.getContentPane().add(new JLabel("USN:"));
+        usnField = new JTextField();
+        frame.getContentPane().add(usnField);
+
+        frame.getContentPane().add(new JLabel("Age:"));
+        ageField = new JTextField();
+        frame.getContentPane().add(ageField);
+
+        frame.getContentPane().add(new JLabel("Address:"));
+        addressField = new JTextField();
+        frame.getContentPane().add(addressField);
+
+        frame.getContentPane().add(new JLabel("SGPA Sem 1:"));
+        sgpa1Field = new JTextField();
+        frame.getContentPane().add(sgpa1Field);
+
+        frame.getContentPane().add(new JLabel("SGPA Sem 2:"));
+        sgpa2Field = new JTextField();
+        frame.getContentPane().add(sgpa2Field);
+
+        frame.getContentPane().add(new JLabel("SGPA Sem 3:"));
+        sgpa3Field = new JTextField();
+        frame.getContentPane().add(sgpa3Field);
+
+        frame.getContentPane().add(new JLabel("SGPA Sem 4:"));
+        sgpa4Field = new JTextField();
+        frame.getContentPane().add(sgpa4Field);
+
+        frame.getContentPane().add(new JLabel("Category:"));
+        categoryField = new JTextField();
+        frame.getContentPane().add(categoryField);
+
+        JButton computeButton = new JButton("Compute CGPA");
+        computeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                computeCgpa();
+            }
+        });
+        frame.getContentPane().add(computeButton);
+
+        JButton doneButton = new JButton("Done");
+        doneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addStudent();
+            }
+        });
+        frame.getContentPane().add(doneButton);
+
+        JButton displayButton = new JButton("Display Students");
+        displayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displayStudents();
+            }
+        });
+        frame.getContentPane().add(displayButton);
+
+        displayArea = new JTextArea();
+        displayArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(displayArea);
+        frame.getContentPane().add(scrollPane);
+
+        frame.setVisible(true);
+    }
+
+    private void computeCgpa() {
+        try {
+            double sgpa1 = Double.parseDouble(sgpa1Field.getText());
+            double sgpa2 = Double.parseDouble(sgpa2Field.getText());
+            double sgpa3 = Double.parseDouble(sgpa3Field.getText());
+            double sgpa4 = Double.parseDouble(sgpa4Field.getText());
+
+            double[] sgpa = {sgpa1, sgpa2, sgpa3, sgpa4};
+            double cgpa = (sgpa1 + sgpa2 + sgpa3 + sgpa4) / 4;
+            JOptionPane.showMessageDialog(frame, "Computed CGPA: " + cgpa);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frame, "Please enter valid SGPA values.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void addStudent() {
+        try {
+            String name = nameField.getText();
+            String usn = usnField.getText();
+            int age = Integer.parseInt(ageField.getText());
+            String address = addressField.getText();
+            double sgpa1 = Double.parseDouble(sgpa1Field.getText());
+            double sgpa2 = Double.parseDouble(sgpa2Field.getText());
+            double sgpa3 = Double.parseDouble(sgpa3Field.getText());
+            double sgpa4 = Double.parseDouble(sgpa4Field.getText());
+            String category = categoryField.getText();
+
+            double[] sgpa = {sgpa1, sgpa2, sgpa3, sgpa4};
+            Student student = new Student(name, usn, age, address, sgpa, category);
+            students.add(student);
+            JOptionPane.showMessageDialog(frame, "Student added successfully.");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frame, "Please enter valid input in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void displayStudents() {
+        StringBuilder sb = new StringBuilder();
+        for (Student student : students) {
+            sb.append(student).append("\n");
+        }
+        displayArea.setText(sb.toString());
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    StudentInfoApp window = new StudentInfoApp();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+}
+Explanation of Features
+Student Class: Represents a single student, storing their details and computing the CGPA from SGPA values.
+StudentInfoApp Class: Manages the GUI, including input fields for student details, buttons for actions, and a text area for displaying the collection of students.
+computeCgpa(): Computes the CGPA based on the SGPA values entered.
+addStudent(): Adds a new student to the list after validating the input.
+displayStudents(): Displays all students in the text area.
+Steps to Execute in Eclipse IDE
+Create a New Java Project:
+
+Open Eclipse.
+Go to File > New > Java Project.
+Enter the project name (e.g., StudentInfoApp).
+Click Finish.
+Create the Student Class:
+
+Right-click on src in your project.
+Select New > Class.
+Name it Student.
+Paste the Student class code into the editor.
+Create the StudentInfoApp Class:
+
+Right-click on src in your project.
+Select New > Class.
+Name it StudentInfoApp.
+Paste the StudentInfoApp class code into the editor.
+Run the Application:
+
+Right-click on StudentInfoApp in the Project Explorer.
+Select Run As > Java Application.
