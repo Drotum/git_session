@@ -9,6 +9,7 @@ Right-click on src in your project and select New > Class.
 Name it Book and paste the following code:
 java
 Copy code
+
 public class Book {
     private int bookId;
     private String title;
@@ -55,11 +56,14 @@ public class Book {
                 '}';
     }
 }
+
+
 Create the BookManager Class:
 Right-click on src in your project and select New > Class.
 Name it BookManager and paste the following code:
 java
 Copy code
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -104,11 +108,14 @@ public class BookManager {
         displayBooks(bookList);
     }
 }
+
+
 Create the Tester Class:
 Right-click on src in your project and select New > Class.
 Name it BookDatabaseTester and paste the following code:
 java
 Copy code
+
 import java.util.List;
 import java.util.Scanner;
 
