@@ -1,0 +1,28 @@
+package prog5;
+
+public class Book {
+    private int bookid;
+    private String name;
+    private String author;
+    private String publisher;
+    private double price;
+    public Book(int bookid,String name,String author,String publisher,double price) {
+    	this.bookid=bookid;
+    	this.name=name;
+    	this.author=author;
+    	this.publisher=publisher;
+    	this.price=price;
+    }
+    public String getPublisher() {
+    	return publisher;
+    }
+    public double getPrice() {
+    	return price;
+    }
+    public String toString() {
+    	return "Book ID: "+bookid+" Name: "+name+" Author: "+author+" Publisher: "+publisher+" Price: \n"+price;
+  
+    }
+    
+}
+

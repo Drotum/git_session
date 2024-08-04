@@ -1,0 +1,54 @@
+package prog2;
+import java.util.*;
+
+public class GenericStack<T> {
+	private ArrayList<T> stack;
+	public GenericStack(){
+		stack=new ArrayList<>();
+	}
+	public void push(T element) {
+		stack.add(element);
+	}
+	public T pop() {
+		if(isEmpty()) {
+			System.out.println("Stack is empty");
+			return null;
+		}
+		return stack.remove(stack.size()-1);
+	}
+	public boolean isEmpty() {
+		return stack.isEmpty();
+	}
+	public void clear() {
+		stack.clear();
+	}
+	public void display() {
+		if(isEmpty()) {
+			System.out.println("Stack is empty");
+		}else {
+		System.out.println("Elements of the stack are:\n"+stack);
+		}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		GenericStack<String> stringstack=new GenericStack<>();
+		stringstack.push("a");
+		stringstack.push("b");
+		stringstack.display();
+		stringstack.pop();
+		stringstack.pop();
+		stringstack.pop();
+		
+		GenericStack<Integer> integerStack = new GenericStack<>();
+        integerStack.push(1);
+        integerStack.push(2);
+        integerStack.push(3);
+        integerStack.display();
+        integerStack.pop();
+        integerStack.display();
+        integerStack.clear();
+        integerStack.display();
+
+	}
+
+}

@@ -1,0 +1,21 @@
+package prog1;
+import java.util.HashMap;
+import java.util.Map;
+
+public class SubstringFrequency {
+    public static void main(String[] args) {
+        String str = "abracadabra";
+        Map<String, Integer> frequencyMap = new HashMap<>();        
+        for (int length = 1; length <= 3; length++) {
+            for (int i = 0; i <= str.length() - length; i++) {
+                String substring = str.substring(i, i + length);
+                frequencyMap.put(substring, frequencyMap.getOrDefault(substring, 0) + 1);
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : frequencyMap.entrySet()) {
+            System.out.println("Substring: \"" + entry.getKey() + "\", Frequency: " + entry.getValue());
+        }
+    }
+}
+

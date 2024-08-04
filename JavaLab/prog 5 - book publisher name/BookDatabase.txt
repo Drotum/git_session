@@ -1,0 +1,57 @@
+package prog5;
+import java.util.*;
+
+
+public class BookDatabase {
+	private List<Book> booklist;
+	public BookDatabase() {
+		 booklist=new ArrayList<>();
+	}
+	public void addBook(Book book) {
+		booklist.add(book);
+	}
+	public List<Book> getByPrice(double price){
+		List<Book> pricedList=new ArrayList<>();
+		for(Book book:booklist) {
+			if(book.getPrice()>price) {
+				pricedList.add(book);
+			}
+		}
+		return pricedList;
+	}
+	public List<Book> publisherget(String publisher){
+		List<Book> orderedlist=new ArrayList<>();
+		for(Book book : booklist) {
+			if(book.getPublisher().equalsIgnoreCase(publisher)) {
+				orderedlist.add(book);
+			}
+		}
+		return orderedlist;
+	}
+		public static void display(List<Book> book) {
+			System.out.println(book);
+		}
+	
+	public static void main(String[] args) {
+		BookDatabase db=new BookDatabase();
+		Scanner sc=new Scanner(System.in);
+		db.addBook(new Book(1,"Book1","Author1","Publisher1",1000));
+		db.addBook(new Book(1,"Book3","Author1","Publisher2",1200));
+		db.addBook(new Book(1,"Book2","Author2","Publisher3",2100));
+		db.addBook(new Book(1,"Book4","Author3","Publisher4",3100));
+		db.addBook(new Book(1,"Book5","Author4","Publisher5",2450));
+		System.out.println("Enter the price:");
+		double p=sc.nextDouble();
+		sc.nextLine();
+		List<Book> ff=db.getByPrice(p);
+		System.out.println("The books with price greater than: "+p+" are:\n");
+		display(ff);
+		System.out.println("Enter the publisher:");
+		String s=sc.nextLine();
+		List<Book> kk=db.publisherget(s);
+		display(kk);
+		sc.close();
+		
+	}
+
+}

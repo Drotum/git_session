@@ -1,0 +1,51 @@
+package prog4;
+
+import java.util.*;
+
+public class BookDatabase{
+	private List<Book> booklist;
+	public BookDatabase() {
+		 booklist=new ArrayList<>();
+	}
+	public void addBook(Book book) {
+		booklist.add(book);
+	}
+	public List<Book> sortByPrice(){
+		List<Book> sorted=new ArrayList<>(booklist);
+		Collections.sort(sorted,Comparator.comparingDouble(Book::getPrice));
+		return sorted;
+	}
+	public List<Book> getBooksByAuthor(String author){
+		List<Book> authorBooks=new ArrayList<>();
+		for(Book book:booklist) {
+			if(book.getAuthor().equalsIgnoreCase(author)) {
+				authorBooks.add(book);
+			}
+		}
+		return authorBooks;
+	}
+	public void display(List<Book> book) {
+		System.out.println(book);		
+	}
+	public static void main(String[] args) {
+		BookDatabase db=new BookDatabase();
+		Scanner sc=new Scanner (System.in);
+		db.addBook(new Book(1,"Book1","Author1","Publisher1",1000));
+		db.addBook(new Book(2,"Book3","Author1","Publisher2",1200));
+		db.addBook(new Book(3,"Book2","Author2","Publisher3",2100));
+		db.addBook(new Book(4,"Book4","Author3","Publisher4",3100));
+		db.addBook(new Book(5,"Book5","Author4","Publisher5",2450));
+		System.out.println("Books by sorted price:\n");
+		List<Book> sortedlist=db.sortByPrice();
+		System.out.println(sortedlist);
+		System.out.println("Enter the name of author:");
+		String a=sc.nextLine();
+		List<Book> authorbooks=db.getBooksByAuthor(a);
+		if(authorbooks.isEmpty()) {
+			System.out.println("No books found");
+		}
+		System.out.println(authorbooks);
+		sc.close();
+	}
+	
+}
