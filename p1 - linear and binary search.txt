@@ -1,0 +1,47 @@
+import time
+import random
+import matplotlib.pyplot as plt
+
+# Linear Search
+def linear_search(arr, x):
+    comparisons = 0
+    for i in range(len(arr)):
+        comparisons += 1
+        if arr[i] == x:
+            return i, comparisons
+    return -1, comparisons
+
+# Binary Search
+def binary_search(arr, x):
+    l, r = 0, len(arr) - 1
+    comparisons = 0
+    while l <= r:
+        comparisons += 1
+        mid = (l + r) // 2
+        if arr[mid] == x:
+            return mid, comparisons
+        elif arr[mid] < x:
+            l = mid + 1
+        else:
+            r = mid - 1
+    return -1, comparisons
+
+# Test and plot
+n_values = [10, 100, 1000, 10000]
+linear_comparisons = []
+binary_comparisons = []
+
+for n in n_values:
+    arr = sorted(random.sample(range(n*2), n))
+    x = random.choice(arr)
+    _, lc = linear_search(arr, x)
+    _, bc = binary_search(arr, x)
+    linear_comparisons.append(lc)
+    binary_comparisons.append(bc)
+
+plt.plot(n_values, linear_comparisons, label='Linear Search')
+plt.plot(n_values, binary_comparisons, label='Binary Search')
+plt.xlabel('Number of elements (n)')
+plt.ylabel('Number of comparisons')
+plt.legend()
+plt.show()
