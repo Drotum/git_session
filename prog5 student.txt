@@ -1,67 +1,82 @@
-Q5
+CREATE TABLE BOOKS (
+    ISBN VARCHAR(10) PRIMARY KEY,
+    Title VARCHAR(100) NOT NULL,
+    Author VARCHAR(50) NOT NULL,
+    Publisher VARCHAR(50) NOT NULL
+);
 
+CREATE TABLE STUDENT (
+    USN VARCHAR(10) PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Sem INT NOT NULL,
+    Dept VARCHAR(10) NOT NULL,
+    Gender CHAR(1) -- e.g., 'M' for male, 'F' for female
+);
 
-SQL
-
-CREATE TABLE books (
+CREATE TABLE BORROWS (
     ISBN VARCHAR(10),
-    Title VARCHAR(10),
-    Author VARCHAR(10),
-    Publisher VARCHAR(10),
-    PRIMARY KEY(ISBN)
+    USN VARCHAR(10),
+    Dates DATE,
+    FOREIGN KEY (ISBN) REFERENCES BOOKS(ISBN),
+    FOREIGN KEY (USN) REFERENCES STUDENT(USN)
 );
 
-INSERT INTO books VALUES('123', 'T1', 'A1', 'P1');
-INSERT INTO books VALUES('002', 'DB', 'A2', 'P2');
-INSERT INTO books VALUES('003', 'T3', 'A3', 'P3');
-INSERT INTO books VALUES('004', 'T4', 'A4', 'P4');
-INSERT INTO books VALUES('005', 'T5', 'A5', 'P5');
+INSERT INTO BOOKS (ISBN, Title, Author, Publisher) VALUES
+('123', 'Database', 'Author1', 'Publisher1'),
+('002', 'Algorithms', 'Author2', 'Publisher2'),
+('003', 'Data Structures', 'Author3', 'Publisher3'),
+('004', 'Operating Systems', 'Author4', 'Publisher4'),
+('005', 'Networking', 'Author5', 'Publisher5');
 
-CREATE TABLE student1 (
-    usn VARCHAR(10),
-    name VARCHAR(10),
-    PRIMARY KEY(usn)
-);
+INSERT INTO STUDENT (USN, Name, Sem, Dept, Gender) VALUES
+('111', 'Alice', 3, 'ISE', 'F'),
+('222', 'Bob', 4, 'CSE', 'M'),
+('333', 'Charlie', 3, 'CSE', 'M'),
+('444', 'Diana', 4, 'ISE', 'F'),
+('555', 'Eve', 4, 'ISE', 'F');
 
-INSERT INTO student1 VALUES('S1', 'John');
-INSERT INTO student1 VALUES('S2', 'Jane');
-INSERT INTO student1 VALUES('S3', 'Alice');
-INSERT INTO student1 VALUES('S4', 'Bob');
-INSERT INTO student1 VALUES('S5', 'Charlie');
+INSERT INTO BORROWS (ISBN, USN, Dates) VALUES
+('123', '222', '2023-02-01'),
+('002', '333', '2023-02-02'),
+('003', '111', '2023-02-03'),
+('005', '444', '2023-02-04'),
+('123', '111', '2023-02-01'),
+('003', '555', '2023-02-05');
 
-CREATE TABLE borrow (
-    usn VARCHAR(10),
-    ISBN VARCHAR(10),
-    borrow_date DATE,
-    FOREIGN KEY(usn) REFERENCES student1(usn),
-    FOREIGN KEY(ISBN) REFERENCES books(ISBN)
-);
+SELECT DISTINCT s.Name
+FROM STUDENT s
+JOIN BORROWS b ON s.USN = b.USN
+WHERE b.ISBN IN ('123', '124');
 
-INSERT INTO borrow VALUES('S1', '123', '2023-01-01');
-INSERT INTO borrow VALUES('S2', '002', '2023-01-02');
-INSERT INTO borrow VALUES('S3', '003', '2023-01-03');
-INSERT INTO borrow VALUES('S1', '004', '2023-01-04');
-INSERT INTO borrow VALUES('S4', '005', '2023-01-05');
+SELECT DISTINCT s.Name
+FROM STUDENT s
+JOIN BORROWS b ON s.USN = b.USN
+JOIN BOOKS bo ON b.ISBN = bo.ISBN
+WHERE s.Gender = 'F' AND bo.Title = 'Database';
 
-SELECT * FROM books;
-SELECT * FROM student1;
-SELECT * FROM borrow;
-
-select NAME from student1 where USN=(select USN from borrow where ISBN='123');
-select NAME from student1 where USN=(select USN from borrow where ISBN=(select ISBN from books where TITLE='DB'));
-select count(ISBN) from borrow group by USN;
-
-MONGO
-
->db.createCollection("LIBRARY") 
->db.LIBRARY.insert({"ISBN":1122,"TITLE":'datbase',"AUTHOR":'ABC',"PUB LISHER":'selina',"SSN":2015,"date":'2017-05-29'}) >db.LIBRARY.insert({"ISBN":2233,"TITLE":'datbase',"AUTHOR":'DEF',"PUB LISHER":'mcgraw',"SSN":2016,"date":'2017-06-29' }) 
-
->db.LIBRARY.find().pretty()
->db.LIBRARY.find({"ISBN":1122},{"SSN":1,_id:0}).pretty()
->db.LIBRARY.find({"TITLE":'datbase'},{"SSN":1,_id:0}).pretty()  
+SELECT s.USN, s.Name, s.Sem, s.Dept, COUNT(b.ISBN) AS Number_of_Books
+FROM STUDENT s
+LEFT JOIN BORROWS b ON s.USN = b.USN
+GROUP BY s.USN, s.Name, s.Sem, s.Dept;
 
 
-plsql
+MONGODB:
+
+# Create the collection
+db.createCollection("LIBRARY")
+
+# Insert values
+db.LIBRARY.insert({"ISBN":1122, "TITLE":'database', "AUTHOR":'ABC', "PUBLISHER":'Selina', "SSN":2015, "DATE":'2017-05-29'})
+db.LIBRARY.insert({"ISBN":2233, "TITLE":'database', "AUTHOR":'DEF', "PUBLISHER":'McGraw', "SSN":2016, "DATE":'2017-06-29'})
+
+# Obtain the SSN of the student who borrowed the book with ISBN '1122'
+db.LIBRARY.find({"ISBN":1122}, {"SSN":1, "_id":0}).pretty()
+
+# Obtain the SSNs of students who have borrowed 'database' books
+db.LIBRARY.find({"TITLE":'database'}, {"SSN":1, "_id":0}).pretty()
+
+
+plsql:
 
 SET SERVEROUTPUT ON
 	declare
@@ -85,3 +100,5 @@ b:=c;
 end loop;
 end;
 /
+
+sp -> password and everything -> open one more terminal and make a file called prog.sql by using gedit prog.sql -> write program and save -> in the SQL terminal do @prog.sql and it will execute
