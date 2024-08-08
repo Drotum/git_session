@@ -1,76 +1,63 @@
-Q2
-
-SQL
-
+use test;
 CREATE TABLE part (
- pno NUMBER(10),
- pname VARCHAR(20),
- colour VARCHAR(20),
- PRIMARY KEY(pno)
+    pno int(10),
+    pname VARCHAR(20),
+    colour VARCHAR(20),
+    PRIMARY KEY(pno)
 );
 
 CREATE TABLE supplier (
- sno NUMBER(10),
- sname VARCHAR(20),
- address VARCHAR(20),
- PRIMARY KEY(sno)
+    sno int(10),
+    sname VARCHAR(20),
+    address VARCHAR(20),
+    PRIMARY KEY(sno)
 );
 
 CREATE TABLE supply (
- pno NUMBER(10),
- sno NUMBER(10),
- quantity VARCHAR(20),
- PRIMARY KEY(pno, sno),
- FOREIGN KEY(pno) REFERENCES part(pno) ON DELETE CASCADE,
- FOREIGN KEY(sno) REFERENCES supplier(sno) ON DELETE CASCADE
+    pno INT(10),
+    sno INT(10),
+    quantity VARCHAR(20),
+    PRIMARY KEY(pno, sno),
+    FOREIGN KEY(pno) REFERENCES part(pno) ON DELETE CASCADE,
+    FOREIGN KEY(sno) REFERENCES supplier(sno) ON DELETE CASCADE
 );
+INSERT INTO part VALUES (1, 'plug', 'black');
+INSERT INTO part VALUES (2, 'bolt', 'blue');
+INSERT INTO part VALUES (3, 'nut', 'green');
 
-INSERT INTO part VALUES(1, 'plug', 'black');
-INSERT INTO part VALUES(2, 'bolt', 'blue');
-INSERT INTO part VALUES(3, 'nut', 'green');
+INSERT INTO supplier VALUES (10, 'Anoop', 'udupi');
+INSERT INTO supplier VALUES (15, 'Bharath', 'mangalore');
+INSERT INTO supplier VALUES (20, 'Ram', 'bangalore');
 
-INSERT INTO supplier VALUES(10, 'Anoop', 'udupi');
-INSERT INTO supplier VALUES(15, 'Bharath', 'mangalore');
-INSERT INTO supplier VALUES(20, 'Ram', 'bangalore');
-
-INSERT INTO supply VALUES(1, 10, 50);
-INSERT INTO supply VALUES(2, 10, 30);
-INSERT INTO supply VALUES(1, 15, 70);
-INSERT INTO supply VALUES(3, 15, 40);
-INSERT INTO supply VALUES(1, 20, 55);
-INSERT INTO supply VALUES(2, 20, 65);
-INSERT INTO supply VALUES(3, 20, 75);
-
-SELECT * FROM part;
-
-SELECT * FROM supply;
-
-SELECT * FROM supplier;
-
-SELECT pno FROM supply WHERE sno IN (SELECT sno FROM supplier WHERE sname = 'Ram');
-
-SELECT sname, pname FROM supplier, supply, part WHERE pname = 'bolt' AND supply.sno = supplier.sno AND part.pno = supply.pno;
-
+INSERT INTO supply VALUES (1, 10, '50');
+INSERT INTO supply VALUES (2, 10, '30');
+INSERT INTO supply VALUES (1, 15, '70');
+INSERT INTO supply VALUES (3, 15, '40');
+INSERT INTO supply VALUES (1, 20, '55');
+INSERT INTO supply VALUES (2, 20, '65');
+INSERT INTO supply VALUES (3, 20, '75');
+SELECT pno
+FROM supply
+WHERE sno IN (SELECT sno FROM supplier WHERE sname = 'Ram');
+SELECT sname, pname 
+FROM supplier, supply, part 
+WHERE pname = 'bolt' 
+AND supply.sno = supplier.sno 
+AND part.pno = supply.pno;
 DELETE FROM part WHERE colour = 'green';
 
 
+MONGODB:
 
-Mongo
+db.createCollection("WAREHOUSE")
 
-db.createCollection("WAREHOUSE");
+db.WAREHOUSE.insert({"PNO": 1947, "Pname": "bolts", "Colour": "Black", "SNO": 1234, "Sname": "ABC", "Address": "blore"})
+db.WAREHOUSE.insert({"PNO": 1950, "Pname": "chain", "Colour": "Blue", "SNO": 4567, "Sname": "DEF", "Address": "chen"})
+db.WAREHOUSE.update({"PNO": 1950}, {$set: {"PNO": 2017}}, {multi: true})
+db.WAREHOUSE.find().pretty()
+db.WAREHOUSE.find({"PNO": 2017}).pretty()
 
-db.WAREHOUSE.insert({"PNO": 1947, "Pname": 'bolts', "Colour": 'Black', "SNO": 1234, "Sname": 'ABC', "Address": 'blore'});
-db.WAREHOUSE.insert({"PNO": 1950, "Pname": 'chain', "Colour": 'Blue', "SNO": 4567, "Sname": 'DEF', "Address": 'chen'});
-
-db.WAREHOUSE.update({"PNO": 1950}, {$set: {"PNO": 2017}}, {multi: true});
-db.WAREHOUSE.find().pretty();
-
-db.WAREHOUSE.find({"PNO": 2017}).pretty();
-
-
-
-plsql
-
+plsql:
 create table part1(pno int,pname char(20),colour char(20),primary key(pno));
 create table copy_part1(pno int,pname char(20),colour char(20),primary key(pno));
 create table shipment (ShipmentID int, pno int, QuantityShipped int, primary key(ShipmentID), foreign key(pno) references part1(pno));   
@@ -110,3 +97,5 @@ FOR shipment IN shipments_cursor
     DBMS_OUTPUT.PUT_LINE('Update complete.');
 end;
 /
+
+sp -> password and everything -> open one more terminal and make a file called prog.sql by using gedit prog.sql -> write program and save -> in the SQL terminal do @prog.sql and it will execute
