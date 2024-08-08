@@ -1,0 +1,87 @@
+Q5
+
+
+SQL
+
+CREATE TABLE books (
+    ISBN VARCHAR(10),
+    Title VARCHAR(10),
+    Author VARCHAR(10),
+    Publisher VARCHAR(10),
+    PRIMARY KEY(ISBN)
+);
+
+INSERT INTO books VALUES('123', 'T1', 'A1', 'P1');
+INSERT INTO books VALUES('002', 'DB', 'A2', 'P2');
+INSERT INTO books VALUES('003', 'T3', 'A3', 'P3');
+INSERT INTO books VALUES('004', 'T4', 'A4', 'P4');
+INSERT INTO books VALUES('005', 'T5', 'A5', 'P5');
+
+CREATE TABLE student1 (
+    usn VARCHAR(10),
+    name VARCHAR(10),
+    PRIMARY KEY(usn)
+);
+
+INSERT INTO student1 VALUES('S1', 'John');
+INSERT INTO student1 VALUES('S2', 'Jane');
+INSERT INTO student1 VALUES('S3', 'Alice');
+INSERT INTO student1 VALUES('S4', 'Bob');
+INSERT INTO student1 VALUES('S5', 'Charlie');
+
+CREATE TABLE borrow (
+    usn VARCHAR(10),
+    ISBN VARCHAR(10),
+    borrow_date DATE,
+    FOREIGN KEY(usn) REFERENCES student1(usn),
+    FOREIGN KEY(ISBN) REFERENCES books(ISBN)
+);
+
+INSERT INTO borrow VALUES('S1', '123', '2023-01-01');
+INSERT INTO borrow VALUES('S2', '002', '2023-01-02');
+INSERT INTO borrow VALUES('S3', '003', '2023-01-03');
+INSERT INTO borrow VALUES('S1', '004', '2023-01-04');
+INSERT INTO borrow VALUES('S4', '005', '2023-01-05');
+
+SELECT * FROM books;
+SELECT * FROM student1;
+SELECT * FROM borrow;
+
+select NAME from student1 where USN=(select USN from borrow where ISBN='123');
+select NAME from student1 where USN=(select USN from borrow where ISBN=(select ISBN from books where TITLE='DB'));
+select count(ISBN) from borrow group by USN;
+
+MONGO
+
+>db.createCollection("LIBRARY") 
+>db.LIBRARY.insert({"ISBN":1122,"TITLE":'datbase',"AUTHOR":'ABC',"PUB LISHER":'selina',"SSN":2015,"date":'2017-05-29'}) >db.LIBRARY.insert({"ISBN":2233,"TITLE":'datbase',"AUTHOR":'DEF',"PUB LISHER":'mcgraw',"SSN":2016,"date":'2017-06-29' }) 
+
+>db.LIBRARY.find().pretty()
+>db.LIBRARY.find({"ISBN":1122},{"SSN":1,_id:0}).pretty()
+>db.LIBRARY.find({"TITLE":'datbase'},{"SSN":1,_id:0}).pretty()  
+
+
+plsql
+
+SET SERVEROUTPUT ON
+	declare
+a number;
+b number;
+c number;
+n number;
+i number;
+begin
+n:=8;
+a:=0;
+b:=1;
+dbms_output.put_line(a);
+dbms_output.put_line(b);
+for i in 1..n-2
+loop
+c:=a+b;
+dbms_output.put_line(c);
+a:=b;
+b:=c;
+end loop;
+end;
+/
