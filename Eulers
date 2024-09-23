@@ -1,0 +1,20 @@
+%Program to solve ordinary differential equations using Euler’s method
+clc;
+close;
+clear;
+% Define the function f(x,y) that represents the differential equation
+f = @(x,y) x + y;
+% Define the initial conditions
+x0 = 0; % initial x value
+y0 = 1; % initial y value
+xn = 1; % final x value
+% Define the step size and the range of x values to approximate
+h = 0.1; % step size
+x = x0:h:xn; % range of x values
+% Initialize the y vector with the initial value y0
+y(1) = y0;
+% Use Euler's method to approximate the solution
+for i = 2:length(x)
+y(i) = y(i-1) + h * f(x(i-1), y(i-1));
+disp(y(i))
+end
