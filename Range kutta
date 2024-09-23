@@ -1,0 +1,22 @@
+clc;
+clear;
+f = @(x,y) x+y;
+%Define the interval
+x0=1;
+y0=1;
+h=0.2;
+xn=2;
+n=(xn-x0)/h;
+x = x0:h:xn;
+y = zeros(size(x));
+y(1) = y0;
+x(1)=x0;
+for i = 2:length(x)
+k1=h*f(x(i-1),y(i-1));
+k2=h*f(x(i-1)+h/2,y(i-1)+k1/2);
+k3=h*f(x(i-1)+h/2,y(i-1)+k2/2);
+k4=h*f(x(i-1)+h,y(i-1)+k3);
+y(i)=y(i-1)+(k1+2*k2+2*k3+k4)/6;
+x(i)=x(i-1)+h;
+fprintf("The value of y(%f) is %f\n", x(i), y(i));
+end
